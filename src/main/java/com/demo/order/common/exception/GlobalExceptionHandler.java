@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,21 +175,19 @@ public class GlobalExceptionHandler {
      */
     @lombok.Data
     @lombok.Builder
+    @lombok.NoArgsConstructor
+    @lombok.AllArgsConstructor
     public static class ErrorResponse {
         private String code;
         private String message;
         private Object data;
         private Long timestamp;
         
-        public ErrorResponse() {
-            this.timestamp = System.currentTimeMillis();
-        }
-        
-        public ErrorResponse(String code, String message, Object data) {
-            this.code = code;
-            this.message = message;
-            this.data = data;
-            this.timestamp = System.currentTimeMillis();
+        {
+            // 初始化块，确保timestamp有值
+            if (timestamp == null) {
+                timestamp = System.currentTimeMillis();
+            }
         }
     }
 }
